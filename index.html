@@ -769,15 +769,6 @@
             
             .hero-text {
                 margin-left: 0;
-                max-width: 100%;
-            }
-            
-            .hero-text h1 {
-                font-size: 2.8rem;
-            }
-            
-            .hero-text h2 {
-                font-size: 1.5rem;
             }
         }
 
@@ -819,46 +810,30 @@
             }
             
             .hero-text h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
 
             .hero-text h2 {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
             
             .hero-btns {
                 flex-direction: column;
                 align-items: center;
-                gap: 15px;
             }
             
             .section-title h2 {
                 font-size: 2rem;
             }
-            
-            .profile-container {
-                width: 220px;
-                height: 220px;
-            }
-            
-            .skills-grid, .projects-grid, .skills-grid-full {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
         }
 
         @media (max-width: 576px) {
             .section {
-                padding: 50px 0;
+                padding: 60px 0;
             }
             
             .hero-text h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
             .hero-text p {
@@ -866,47 +841,8 @@
             }
             
             .profile-container {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .hero-btns .btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .footer-links h3::after, .footer-social h3::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
-        @media (max-width: 400px) {
-            .hero-text h1 {
-                font-size: 1.6rem;
-            }
-            
-            .hero-text h2 {
-                font-size: 1.1rem;
-            }
-            
-            .profile-container {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .container {
-                width: 95%;
-                padding: 0 15px;
+                width: 200px;
+                height: 200px;
             }
         }
     </style>
@@ -1388,18 +1324,18 @@
             contactForm.reset();
         });
 
-        // Fixed smooth scrolling for all navigation links
+        // Fixed smooth scrolling with header offset
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                if(targetId === '#') return;
                 
                 const targetElement = document.querySelector(targetId);
-                if (targetElement) {
+                if(targetElement) {
                     const headerHeight = document.querySelector('header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                     
                     window.scrollTo({
                         top: targetPosition,
@@ -1410,4 +1346,5 @@
         });
     </script>
 </body>
+
 </html>
