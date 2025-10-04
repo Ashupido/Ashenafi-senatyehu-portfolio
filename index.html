@@ -663,112 +663,124 @@
             font-size: 0.95rem;
         }
 
-        /* Timeline */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+      :root {
+    --primary: #007bff;
+    --foreground: #222;
+    --muted-foreground: #555;
+    --card: #fff;
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-glow: 0 4px 15px rgba(0,123,255,0.3);
+    --transition: all 0.3s ease;
+}
 
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background: var(--primary);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            opacity: 0.3;
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 1s ease;
-        }
+/* Timeline */
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: auto;
+}
 
-        .timeline.visible::after {
-            transform: scaleY(1);
-        }
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background: var(--primary);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    opacity: 0.3;
+}
 
-        .timeline-item {
-            padding: 1rem 3rem;
-            position: relative;
-            width: 50%;
-            margin-bottom: 3rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+.timeline-item {
+    padding: 1rem 3rem;
+    position: relative;
+    width: 50%;
+    margin-bottom: 3rem;
+}
 
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
 
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
 
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
+.timeline-content {
+    padding: 1.5rem;
+    background: var(--card);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--primary);
+    transition: var(--transition);
+}
 
-        .timeline-content {
-            padding: 2rem;
-            background: var(--card);
-            border-radius: 1rem;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            border-left: 4px solid var(--primary);
-        }
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow);
+}
 
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-glow);
-        }
+.timeline-content h3 {
+    font-size: 1.3rem;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
 
-        .timeline-content h3 {
-            font-size: 1.3rem;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
-        }
+.timeline-content h4 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
 
-        .timeline-content h4 {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+.timeline-content p,
+.timeline-content ul {
+    color: var(--muted-foreground);
+    margin-bottom: 0.5rem;
+}
 
-        .timeline-content p {
-            color: var(--muted-foreground);
-            margin-bottom: 0.5rem;
-        }
+.timeline-content ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+}
 
-        .timeline-content ul {
-            list-style: disc;
-            padding-left: 1.5rem;
-            color: var(--muted-foreground);
-        }
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: var(--primary);
+    border: 4px solid var(--card);
+    border-radius: 50%;
+    top: 1rem;
+    box-shadow: var(--shadow-glow);
+}
 
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
-            border: 4px solid var(--card);
-            border-radius: 50%;
-            top: 1rem;
-            box-shadow: var(--shadow-glow);
-        }
+.timeline-item:nth-child(odd)::after {
+    right: -12px;
+}
 
-        .timeline-item:nth-child(odd)::after {
-            right: -12px;
-        }
+.timeline-item:nth-child(even)::after {
+    left: -12px;
+}
 
-        .timeline-item:nth-child(even)::after {
-            left: -12px;
-        }
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .timeline-item,
+    .timeline-item:nth-child(even),
+    .timeline-item:nth-child(odd) {
+        width: 100%;
+        left: 0 !important;
+        text-align: left !important;
+        margin-left: 0;
+    }
+    .timeline-item::after {
+        left: 50%;c:\Users\840 G6 New Version\Downloads\mill.png c:\Users\840 G6 New Version\Downloads\matt.png
+        margin-left: -12px;
+    }
+}
+
 
         /* Projects Section */
         #projects {
@@ -1263,7 +1275,37 @@
                 width: 180px;
                 height: 180px;
             }
-        }
+        }.project-img {
+  position: relative;
+  max-width: 500px;
+  margin: auto;
+  overflow: hidden;
+}
+.project-img img {
+  display: none;
+  width: 100%;
+  border-radius: 10px;
+}
+.project-img img.active {
+  display: block;
+}
+.project-img .prev, .project-img .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.project-img .prev { left: 10px; }
+.project-img .next { right: 10px; }
+
+
+
+
     </style>
 </head>
 <body>
@@ -1279,8 +1321,8 @@
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li class="language-switcher">
-                    <button class="language-btn active" data-lang="en">EN</button>
-                    <button class="language-btn" data-lang="am">AM</button>
+                    <button class="language-btn active" data-lang="en">English</button>
+                    <button class="language-btn" data-lang="am">Amharic</button>
                 </li>
             </ul>
             <div class="hamburger" id="hamburger">
@@ -1324,7 +1366,7 @@
                 </div>
                 <div class="about-text">
                     <h3 data-en="Hello! I'm Ashenafi Sentayehu" data-am="ሰላም! እኔ አሸናፊ ሰንታየሁ ነኝ">Hello! I'm Ashenafi Sentayehu</h3>
-                    <p data-en="I am a dedicated and innovative Information Technology graduate from Debre Markos University. I specialize in full stack web development, software development, system analysis, Graphic Design and IT infrastructure." data-am="እኔ ከደብረ ማርቆስ ዩኒቨርሲቲ ተመራቂ የሆንኩ ተወዳጅ እና ሰዓሊ የመረጃ ቴክኖሎጂ ተመራማሪ ነኝ። በፉል ስታክ ዌብ አበልጻጊነት፣ ሶፍትዌር አበልጻጊነት፣ ሲስተም ትንተና፣ ግራፊክ ዲዛይን እና የመረጃ ቴክኖሎጂ መሠረተ ልማት ላይ እጅግ ብርቱ ችሎታ አለኝ።">I am a dedicated and innovative Information Technology graduate from Debre Markos University. I specialize in full stack web development, software development, system analysis, Graphic Design and IT infrastructure.</p>
+                    <p data-en="I am a dedicated and innovative Information Technology graduate from Debre Markos University. I specialize in full stack web development, software development, system analysis, Graphic Design and IT infrastructure." data-am="እኔ ከደብረ ማርቆስ ዩኒቨርሲቲ ተመራቂ የሆንኩ ተወዳጅ እና የመረጃ ቴክኖሎጂ ተመራማሪ ነኝ። በፉል ስታክ ዌብ አበልጻጊነት፣ ሶፍትዌር አበልጻጊነት፣ ሲስተም ትንተና፣ ግራፊክ ዲዛይን እና የመረጃ ቴክኖሎጂ መሠረተ ልማት ላይ እጅግ ብርቱ ችሎታ አለኝ።">I am a dedicated and innovative Information Technology graduate from Debre Markos University. I specialize in full stack web development, software development, system analysis, Graphic Design and IT infrastructure.</p>
                     <p data-en="I have been involved in multiple academic and personal projects that enhanced my practical skills, from designing and building responsive web applications to analyzing system requirements and managing network setups. I am committed to continuous learning and passionate about using technology to solve real-world problems." data-am="በብዙ የትምህርት እና የግል ፕሮጀክቶች ላይ ተሳትፌአለሁ፣ እነዚህም ተግባራዊ ችሎታዬን አሻሽተዋል፣ ከምላሽ የሚሰጡ ዌብ መተግበሪያዎችን ከመንደፍ እና መገንባት እስከ ሲስተም መስፈርቶችን መተንተን እና የኔትወርክ ማዋቀሮችን ማስተዳደር ድረስ። በቀጣይነት መማር ላይ ቁርጠኛ እና ቴክኖሎጂን በመጠቀም በእውነተኛ ዓለም ያሉ ችግሮችን ለመፍታት በጣም ተግዳሮት አለኝ።">I have been involved in multiple academic and personal projects that enhanced my practical skills, from designing and building responsive web applications to analyzing system requirements and managing network setups. I am committed to continuous learning and passionate about using technology to solve real-world problems.</p>
                     
                     <div class="skills-grid">
@@ -1353,162 +1395,154 @@
             </div>
         </div>
     </section>
+    
+<!-- Education & Experience Section -->
+<section id="education">
+  <div class="container">
+    <div class="section-title">
+      <h2 data-en="Education & Experience" data-am="ትምህርት እና ልምድ">Education & Experience</h2>
+      <p data-en="My academic and professional journey" data-am="የእኔ የትምህርት እና ሙያዊ ጉዞ">My academic and professional journey</p>
+    </div>
 
-    <!-- Education & Experience Section -->
-    <section id="education">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-en="Education & Experience" data-am="ትምህርት እና ልምድ">Education & Experience</h2>
-                <p data-en="My academic and professional journey" data-am="የእኔ የትምህርት እና ሙያዊ ጉዞ">My academic and professional journey</p>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 data-en="Education" data-am="ትምህርት">Education</h3>
-                        <h4 data-en="Bachelor of Science in Information Technology" data-am="የሳይንስ ባችለር በመረጃ ቴክኖሎጂ">Bachelor of Science in Information Technology</h4>
-                        <p data-en="Debre Markos University, Ethiopia" data-am="ደብረ ማርቆስ ዩኒቨርሲቲ፣ ኢትዮጵያ">Debre Markos University, Ethiopia</p>
-                        <p>2022 – 2025</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 data-en="Professional Experience" data-am="ሙያዊ ልምድ">Professional Experience</h3>
-                        <h4 data-en="IT Support Intern" data-am="የመረጃ ቴክኖሎጂ ድጋፍ ልምምድ">IT Support Intern</h4>
-                        <p data-en="Debre Markos University" data-am="ደብረ ማርቆስ ዩኒቨርሲቲ">Debre Markos University</p>
-                        <p>2023 – 2025</p>
-                        <ul>
-                            <li data-en="Assisted in maintaining campus network infrastructure" data-am="የካምፓስ ኔትወርክ መሠረተ ልማት በመጠበቅ ረድቻለሁ">Assisted in maintaining campus network infrastructure</li>
-                            <li data-en="Provided technical support and troubleshooting for staff and students" data-am="ለሠራተኞች እና ተማሪዎች ቴክኒካል ድጋፍ እና ችግር መፍትሄ ሰጪ ነበር">Provided technical support and troubleshooting for staff and students</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 data-en="Professional Experience" data-am="ሙያዊ ልምድ">Professional Experience</h3>
-                        <h4 data-en="Full Stack Developer" data-am="ፉል ስታክ አበልጻጊ">Full Stack Developer</h4>
-                        <p data-en="Prime Milston" data-am="ፕራይም ሚልስተን">Prime Milston</p>
-                        <p>2023 – Present</p>
-                        <ul>
-                            <li data-en="Developed and maintained responsive web applications" data-am="ምላሽ የሚሰጡ ዌብ መተግበሪያዎችን አዘጋጅቻለሁ እና አሳልፌአለሁ">Developed and maintained responsive web applications</li>
-                            <li data-en="Collaborated with cross-functional teams to deliver high-quality software solutions" data-am="ከፍተኛ ጥራት ያላቸው የሶፍትዌር መፍትሄዎችን ለማቅረብ ከተለያዩ ቡድኖች ጋር ተባብሬ ሰርቻለሁ">Collaborated with cross-functional teams to deliver high-quality software solutions</li>
-                            <li data-en="Implemented modern UI/UX designs and optimized application performance" data-am="ዘመናዊ UI/UX ዲዛይኖችን አፈጻጸምኩ እና የመተግበሪያ አፈጻጸምን አሻሽቻለሁ">Implemented modern UI/UX designs and optimized application performance</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="timeline">
+      <!-- Education -->
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3 data-en="Education" data-am="ትምህርት">Education</h3>
+          <h4 data-en="Bachelor of Science in Information Technology" 
+              data-am="የሳይንስ ባችለር በመረጃ ቴክኖሎጂ">Bachelor of Science in Information Technology</h4>
+          <p data-en="Debre Markos University, Ethiopia" data-am="ደብረ ማርቆስ ዩኒቨርሲቲ፣ ኢትዮጵያ">Debre Markos University, Ethiopia</p>
+          <p>2022 – 2025</p>
         </div>
-    </section>
+      </div>
+
+      <!-- Experience 1 -->
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3 data-en="Professional Experience" data-am="ሙያዊ ልምድ">Professional Experience</h3>
+          <h4 data-en="IT Support Intern" data-am="የመረጃ ቴክኖሎጂ ድጋፍ ልምምድ">IT Support Intern</h4>
+          <p data-en="Debre Markos University" data-am="ደብረ ማርቆስ ዩኒቨርሲቲ">Debre Markos University</p>
+          <p>2023 – 2025</p>
+          <ul>
+            <li data-en="Assisted in maintaining campus network infrastructure" 
+                data-am="የካምፓስ ኔትወርክ መሠረተ ልማት በመጠበቅ ረድቻለሁ">
+                Assisted in maintaining campus network infrastructure</li>
+            <li data-en="Provided technical support and troubleshooting for staff and students" 
+                data-am="ለሠራተኞች እና ተማሪዎች ቴክኒካል ድጋፍ እና ችግር መፍትሄ ሰጪ ነበር">
+                Provided technical support and troubleshooting for staff and students</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Experience 2 -->
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3 data-en="Professional Experience" data-am="ሙያዊ ልምድ">Professional Experience</h3>
+          <h4 data-en="Full Stack Developer" data-am="ፉል ስታክ አበልጻጊ">Full Stack Developer</h4>
+          <p data-en="Prime Milston" data-am="ፕራይም ሚልስተን">Prime Milston</p>
+          <p>2023 – Present</p>
+          <ul>
+            <li data-en="Developed and maintained responsive web applications" 
+                data-am="ምላሽ የሚሰጡ ዌብ መተግበሪያዎችን አዘጋጅቻለሁ እና አሳልፌአለሁ">
+                Developed and maintained responsive web applications</li>
+            <li data-en="Collaborated with cross-functional teams to deliver high-quality software solutions" 
+                data-am="ከፍተኛ ጥራት ያላቸው የሶፍትዌር መፍትሄዎችን ለማቅረብ ከተለያዩ ቡድኖች ጋር ተባብሬ ሰርቻለሁ">
+                Collaborated with cross-functional teams to deliver high-quality software solutions</li>
+            <li data-en="Implemented modern UI/UX designs and optimized application performance" 
+                data-am="ዘመናዊ UI/UX ዲዛይኖችን አፈጻጸምኩ እና የመተግበሪያ አፈጻጸምን አሻሽቻለሁ">
+                Implemented modern UI/UX designs and optimized application performance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-en="My Projects" data-am="የእኔ ፕሮጀክቶች">My Projects</h2>
-                <p data-en="Some of my recent work" data-am="ከሚገኙት የእኔ ስራዎች">Some of my recent work</p>
-            </div>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="images/primemilston.jpg" alt="Prime Milston">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="Prime Milston" data-am="ፕራይም ሚልስተን">Prime Milston</h3>
-                        <p data-en="A comprehensive business website showcasing services and portfolio with modern design and responsive layout." data-am="ዘመናዊ ዲዛይን እና ምላሽ የሚሰጥ አቀማመጥ ያለው አጠቃላይ የንግድ ዌብሳይት ሠርቪሶችን እና ፖርትፎሊዮን የሚያሳይ።">A comprehensive business website showcasing services and portfolio with modern design and responsive layout.</p>
-                        <div class="project-tags">
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>JavaScript</span>
-                            <span>PHP</span>
-                            <span>MySQL</span>
-                        </div>
-                        <a href="https://www.primemilston.com" target="_blank" class="btn btn-primary" data-en="Visit Website" data-am="ዌብሳይት ይጎብኙ">Visit Website</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Special Matters">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="Special Matters" data-am="ልዩ ጉዳዮች">Special Matters</h3>
-                        <p data-en="An interactive platform for specialized services with user-friendly interface and efficient backend processing." data-am="ለተወሰኑ አገልግሎቶች የተመቻቸ በይነገጽ እና ውጤታማ የጀርባ ማቀነባበሪያ ያለው በይነመረብ መድረክ።">An interactive platform for specialized services with user-friendly interface and efficient backend processing.</p>
-                        <div class="project-tags">
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>JavaScript</span>
-                            <span>React</span>
-                            <span>Node.js</span>
-                        </div>
-                        <a href="https://www.sepcialmaters.com" target="_blank" class="btn btn-primary" data-en="Visit Website" data-am="ዌብሳይት ይጎብኙ">Visit Website</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1073&q=80" alt="Online House Rental System">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="Online House Rental System" data-am="የመስመር ላይ ቤት ኪራይ ሲስተም">Online House Rental System</h3>
-                        <p data-en="Built a responsive platform for property listings, bookings, and user management." data-am="ለንብረት ዝርዝሮች፣ ቦታ ማስያዝ እና ተጠቃሚ አስተዳደር ምላሽ የሚሰጥ መድረክ ገንብቻለሁ።">Built a responsive platform for property listings, bookings, and user management.</p>
-                        <div class="project-tags">
-                            <span>PHP</span>
-                            <span>MySQL</span>
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>Bootstrap</span>
-                        </div>
-                        <a href="#" class="btn btn-primary" data-en="View Project" data-am="ፕሮጀክት ይመልከቱ">View Project</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="University Management System">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="University Management System" data-am="ዩኒቨርሲቲ አስተዳደር ሲስተም">University Management System</h3>
-                        <p data-en="Developed a system for student registration, grading, and scheduling with role-based access." data-am="ለተማሪ ምዝገባ፣ ነጥብ መስጠት እና መርሀ ግብር ከሚያስችሉ ሚና ማዕረጎች ጋር ሲስተም አዘጋጅቻለሁ።">Developed a system for student registration, grading, and scheduling with role-based access.</p>
-                        <div class="project-tags">
-                            <span>PHP</span>
-                            <span>MySQL</span>
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>Bootstrap</span>
-                        </div>
-                        <a href="#" class="btn btn-primary" data-en="View Project" data-am="ፕሮጀክት ይመልከቱ">View Project</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="E-commerce Website">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="E-commerce Website (Demo)" data-am="የመስመር ላይ ንግድ ዌብሳይት (ማሳያ)">E-commerce Website (Demo)</h3>
-                        <p data-en="Created a shopping site with product listings, cart, and admin dashboard using RESTful APIs." data-am="RESTful APIs በመጠቀም የምርት ዝርዝሮች፣ የግዢ ቋሚ እና የአስተዳዳሪ ዳሽቦርድ ያለው የግዢ ዌብሳይት ፈጥራለሁ።">Created a shopping site with product listings, cart, and admin dashboard using RESTful APIs.</p>
-                        <div class="project-tags">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>Express</span>
-                            <span>MongoDB</span>
-                        </div>
-                        <a href="#" class="btn btn-primary" data-en="View Project" data-am="ፕሮጀክት ይመልከቱ">View Project</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1153&q=80" alt="Library Management System">
-                    </div>
-                    <div class="project-info">
-                        <h3 data-en="Library Management System" data-am="ቤተ መጻሕፍት አስተዳደር ሲስተም">Library Management System</h3>
-                        <p data-en="Designed a desktop app for book lending and returns with multi-user access and secure data handling." data-am="ለመጽሐፍ መበደር እና መመለስ ብዙ ተጠቃሚ መዳረሻ እና ደህንነት ያለው ውሂብ ማስተዳደር ያለው ዴስክቶፕ መተግበሪያ አዘጋጅቻለሁ።">Designed a desktop app for book lending and returns with multi-user access and secure data handling.</p>
-                        <div class="project-tags">
-                            <span>Java</span>
-                            <span>MySQL</span>
-                        </div>
-                        <a href="#" class="btn btn-primary" data-en="View Project" data-am="ፕሮጀክት ይመልከቱ">View Project</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="projects">
+  <div class="container">
+    <div class="section-title">
+      <h2 data-en="My Projects" data-am="የእኔ ፕሮጀክቶች">My Projects</h2>
+      <p data-en="Some of my recent work" data-am="ከሚገኙት የእኔ ስራዎች">Some of my recent work</p>
+    </div>
 
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="project-card">
+        <div class="project-img slider">
+          <img src="images/primemilston.jpg" class="active" alt="Prime Milston">
+          <img src="images/project management.jpg" alt="Project Management">
+          <img src="images/system analysis.jpg" alt="System Analysis">
+
+          <button class="prev">❮</button>
+          <button class="next">❯</button>
+        </div>
+        <div class="project-info">
+          <h3>Prime Milston</h3>
+          <p>Business website showcasing services and portfolio.</p>
+          <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>MySQL</span></div>
+          <a href="https://www.primemilston.com" target="_blank" class="btn btn-primary">Visit Website</a>
+        </div>
+      </div>
+
+      <!-- Project 2  sepical fome -->
+      <div class="project-card">
+        <div class="project-img slider">
+          <img src="images/matt.png" class="active" alt="Special Matters">
+          <img src="images/matt2.png" alt="Team Work">
+          <img src="images/matt3.png" alt="Office">
+<img src="images/matt4.png" alt="Office">
+<img src="images/matt5.png" alt="Office">
+          <button class="prev">❮</button>
+          <button class="next">❯</button>
+        </div>
+        <div class="project-info">
+          <h3>Special Matters</h3>
+          <p>Interactive platform with backend integration.</p>
+          <div class="project-tags"><span>React</span><span>Node.js</span><span>MongoDB</span></div>
+          <a href="https://www.sepcialmaters.com" target="_blank" class="btn btn-primary">Visit Website</a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card">
+        <div class="project-img slider">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1170&q=80" class="active" alt="Rental System">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1170&q=80" alt="Booking System">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1170&q=80" alt="Property Listings">
+
+          <button class="prev">❮</button>
+          <button class="next">❯</button>
+        </div>
+        <div class="project-info">
+          <h3>Online House Rental System</h3>
+          <p>Responsive rental management platform.</p>
+          <div class="project-tags"><span>PHP</span><span>MySQL</span><span>Bootstrap</span></div>
+          <a href="#" target="_blank" class="btn btn-primary">View Project</a>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card">
+        <div class="project-img slider">
+          <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1170&q=80" class="active" alt="University Management">
+          <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1170&q=80" alt="Classrooms">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1170&q=80" alt="Dashboard">
+
+          <button class="prev">❮</button>
+          <button class="next">❯</button>
+        </div>
+        <div class="project-info">
+          <h3>University Management System</h3>
+          <p>System for student registration, grading, and scheduling.</p>
+          <div class="project-tags"><span>PHP</span><span>MySQL</span><span>Bootstrap</span></div>
+          <a href="#" class="btn btn-primary">View Project</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
     <!-- Skills Section -->
     <section id="skills">
         <div class="container">
@@ -1582,78 +1616,82 @@
             </div>
         </div>
     </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-en="Contact Me" data-am="ያግኙኝ">Contact Me</h2>
-                <p data-en="Get in touch" data-am="አግኙኝ">Get in touch</p>
+<!-- Contact Section -->
+<section id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2 data-en="Contact Me" data-am="ያግኙኝ">Contact Me</h2>
+            <p data-en="Get in touch" data-am="አግኙኝ">Get in touch</p>
+        </div>
+        <div class="contact-content" style="display: flex; gap: 2rem; flex-wrap: wrap;">
+            <!-- Contact Info -->
+            <div class="contact-info" style="flex:1; min-width:250px;">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <h3 data-en="Phone" data-am="ስልክ">Phone</h3>
+                        <p>+251923231275</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h3 data-en="Email" data-am="ኢሜይል">Email</h3>
+                        <p>ashenafisentayehu19@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h3 data-en="Address" data-am="አድራሻ">Address</h3>
+                        <p data-en="Ethiopia, Addis Ababa" data-am="ኢትዮጵያ፣ አዲስ አበባ">Ethiopia, Addis Ababa</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-language"></i></div>
+                    <div>
+                        <h3 data-en="Languages" data-am="ቋንቋዎች">Languages</h3>
+                        <p data-en="Amharic (Native), English (Fluent)" data-am="አማርኛ (የእናት)፣ እንግሊዝኛ (ፈሳሽ)">Amharic (Native), English (Fluent)</p>
+                    </div>
+                </div>
             </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <h3 data-en="Phone" data-am="ስልክ">Phone</h3>
-                            <p>+251923231275</p>
-                        </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form" style="flex:1; min-width:250px;">
+                <form id="contactForm" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                    <!-- Netlify required hidden fields -->
+                    <input type="hidden" name="form-name" value="contact">
+                    <input type="hidden" name="bot-field">
+
+                    <div class="form-group">
+                        <label for="name" data-en="Your Name" data-am="ስምዎ">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h3 data-en="Email" data-am="ኢሜይል">Email</h3>
-                            <p>ashenafisentayehui@gmail.com</p>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="email" data-en="Your Email" data-am="ኢሜይልዎ">Your Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h3 data-en="Address" data-am="አድራሻ">Address</h3>
-                            <p data-en="Ethiopia, Addis Ababa" data-am="ኢትዮጵያ፣ አዲስ አበባ">Ethiopia, Addis Ababa</p>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="subject" data-en="Subject" data-am="ርዕስ">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-language"></i>
-                        </div>
-                        <div>
-                            <h3 data-en="Languages" data-am="ቋንቋዎች">Languages</h3>
-                            <p data-en="Amharic (Native), English (Fluent)" data-am="አማርኛ (የእናት)፣ እንግሊዝኛ (ፈሳሽ)">Amharic (Native), English (Fluent)</p>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="message" data-en="Your Message" data-am="መልእክትዎ">Your Message</label>
+                        <textarea id="message" name="message" class="form-control" required></textarea>
                     </div>
-                </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name" data-en="Your Name" data-am="ስምዎ">Your Name</label>
-                            <input type="text" id="name" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" data-en="Your Email" data-am="ኢሜይልዎ">Your Email</label>
-                            <input type="email" id="email" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject" data-en="Subject" data-am="ርዕስ">Subject</label>
-                            <input type="text" id="subject" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message" data-en="Your Message" data-am="መልእክትዎ">Your Message</label>
-                            <textarea id="message" class="form-control" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;" data-en="Send Message" data-am="መልእክት ይላኩ">Send Message</button>
-                    </form>
-                </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" data-en="Send Message" data-am="መልእክት ይላኩ">Send Message</button>
+                </form>
+
+                <!-- Success / Error Messages -->
+                <p id="formMessage" style="margin-top:1rem;"></p>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -1910,9 +1948,59 @@
             observer.observe(form);
         });
 
-        document.querySelectorAll('.timeline').forEach(timeline => {
-            observer.observe(timeline);
-        });
+        document.querySelectorAll(".project-card").forEach(card => {
+  const slides = card.querySelectorAll(".project-img img");
+  const prev = card.querySelector(".prev");
+  const next = card.querySelector(".next");
+  let index = 0;
+
+  function showSlide(i) {
+    slides.forEach((img, n) => img.classList.toggle("active", n === i));
+  }
+
+  next.addEventListener("click", () => {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  });
+
+  prev.addEventListener("click", () => {
+    index = (index - 1 + slides.length) % slides.length;
+    showSlide(index);
+  });
+
+  // Auto-slide every 4s
+  setInterval(() => {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  }, 4000);
+
+  // Init
+  showSlide(index);
+});
+<!-- AJAX Submission Script -->
+
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formMessage = document.getElementById("formMessage");
+
+    fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(new FormData(form)).toString()
+    })
+    .then(() => {
+        formMessage.style.color = "green";
+        formMessage.innerText = "Your message has been sent successfully!";
+        form.reset();
+    })
+    .catch((error) => {
+        formMessage.style.color = "red";
+        formMessage.innerText = "Oops! There was an error sending your message.";
+        console.error(error);
+    });
+});
+</script>
     </script>
 </body>
 </html>
