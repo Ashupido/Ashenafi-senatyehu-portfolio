@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me - Ashenafi Sentayehu</title>
+    <meta name="description" content="Contact Ashenafi Sentayehu - Full Stack Web Developer, Software Engineer and Graphic Designer">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/contact.css">
+    <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <a href="../index.html" class="logo">A<span>S</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html" data-original-text="Home">Home</a></li>
+                <li><a href="about.html" data-original-text="About">About</a></li>
+                <li><a href="education.html" data-original-text="Education & Experience">Education & Experience</a></li>
+                <li><a href="projects.html" data-original-text="Projects">Projects</a></li>
+                <li><a href="skills.html" data-original-text="Skills">Skills</a></li>
+                <li><a href="contact.html" class="active" data-original-text="Contact">Contact</a></li>
+                <li class="language-switcher">
+                    <button class="language-btn active" data-lang="en">English</button>
+                    <button class="language-btn" data-lang="am">Amharic</button>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="Contact Me" data-am="ያግኙኝ">Contact Me</h2>
+                <p data-en="Get in touch with me for any inquiries or collaborations" data-am="ለማንኛውም ጥያቄ ወይም ትብብር አግኙኝ">Get in touch with me for any inquiries or collaborations</p>
+            </div>
+            <div class="contact-content">
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h3 data-en="Phone" data-am="ስልክ">Phone</h3>
+                            <p>+251923231275</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h3 data-en="Email" data-am="ኢሜይል">Email</h3>
+                            <p>ashenafisentayehu19@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h3 data-en="Address" data-am="አድራሻ">Address</h3>
+                            <p data-en="Ethiopia, Addis Ababa" data-am="ኢትዮጵያ፣ አዲስ አበባ">Ethiopia, Addis Ababa</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-language"></i></div>
+                        <div>
+                            <h3 data-en="Languages" data-am="ቋንቋዎች">Languages</h3>
+                            <p data-en="Amharic (Native), English (Fluent)" data-am="አማርኛ (የእናት)፣ እንግሊዝኛ (ፈሳሽ)">Amharic (Native), English (Fluent)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form">
+                    <form class="contact-form"
+                        action="https://formsubmit.co/c6863acbcc0277c72bd8c1cdb88174d2"
+                        method="POST">
+
+                        <!-- redirect to your success page -->
+                        <input type="hidden" name="_next"
+                            value="https://ashenafi-sentayehu-portfolio.netlify.app/pages/contact.html">
+
+                        <!-- disable captcha -->
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <div class="form-group">
+                            <label for="name" data-en="Your Name" data-am="ስምዎ">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" data-en="Your Email" data-am="ኢሜይልዎ">Your Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" data-en="Your Message" data-am="መልእክትዎ">Your Message</label>
+                            <textarea id="message" name="message" class="form-control" placeholder="Write your message" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" data-en="Send Message" data-am="መልእክት ይላኩ">Send Message</button>
+                    </form>
+
+                    <!-- Success Message (Hidden by default) -->
+                    <div class="msg" id="successMessage"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/language-switcher.js"></script>
+    
+    <script>
+        // Load footer using fetch
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                    // Initialize footer functionality after loading
+                    if (window.updateFooterLanguage) {
+                        window.updateFooterLanguage();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                });
+
+            // Mobile Navigation Toggle
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Form submission message
+            const form = document.querySelector(".contact-form");
+            const msg = document.getElementById("successMessage");
+
+            form.addEventListener("submit", () => {
+                const currentLang = localStorage.getItem('preferredLanguage') || 'en';
+                // Show success message immediately
+                const successText = currentLang === 'en' 
+                    ? 'Message sent successfully!' 
+                    : 'መልእክት ተልኳል!';
+                msg.textContent = successText;
+                msg.style.display = "block";
+                
+                // Hide message after 3 seconds
+                setTimeout(() => {
+                    msg.style.display = "none";
+                }, 3000);
+            });
+
+            // Scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Animate child elements with delays
+                        if (entry.target.classList.contains('contact-info')) {
+                            const contactItems = entry.target.querySelectorAll('.contact-item');
+                            contactItems.forEach((item, index) => {
+                                setTimeout(() => {
+                                    item.classList.add('visible');
+                                }, 100 * index);
+                            });
+                        }
+                        
+                        if (entry.target.classList.contains('contact-form')) {
+                            entry.target.classList.add('visible');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animatable elements
+            document.querySelectorAll('section, .section-title, .contact-info, .contact-form').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
