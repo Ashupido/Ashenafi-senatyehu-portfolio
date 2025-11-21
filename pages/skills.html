@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Ashenafi Sentayehu | Full Stack Developer</title>
+    <meta name="description" content="Technical and professional skills of Ashenafi Sentayehu">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/skills.css">
+    <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <a href="../index.html" class="logo">A<span>S</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html" data-original-text="Home">Home</a></li>
+                <li><a href="about.html" data-original-text="About">About</a></li>
+                <li><a href="education.html" data-original-text="Education & Experience">Education & Experience</a></li>
+                <li><a href="projects.html" data-original-text="Projects">Projects</a></li>
+                <li><a href="skills.html" class="active" data-original-text="Skills">Skills</a></li>
+                <li><a href="contact.html" data-original-text="Contact">Contact</a></li>
+                <li class="language-switcher">
+                    <button class="language-btn active" data-lang="en">English</button>
+                    <button class="language-btn" data-lang="am">Amharic</button>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="Professional Skills" data-am="ሙያዊ ችሎታዎች">Professional Skills</h2>
+                <p data-en="Technologies and methodologies I work with" data-am="የምሰራባቸው ቴክኖሎጂዎች እና ዘዴዎች">Technologies and methodologies I work with</p>
+            </div>
+            <div class="skills-category-grid">
+                <div class="skill-category">
+                    <h3 data-en="Full-Stack Development" data-am="ፉል ስታክ አበልጻጊነት">Full-Stack Development</h3>
+                    <img src="../images/full stack.jpg" alt="Full-Stack Development">
+                    <div class="skill-list">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">PHP</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Express</span>
+                        <span class="skill-tag">MongoDB</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-en="Software Engineering" data-am="ሶፍትዌር ምህንድስና">Software Engineering</h3>
+                    <img src="../images/software.jpg" alt="Software Engineering">
+                    <div class="skill-list">
+                        <span class="skill-tag">UML Diagrams</span>
+                        <span class="skill-tag">Requirements Analysis</span>
+                        <span class="skill-tag">Testing</span>
+                        <span class="skill-tag">Java</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-en="System Analysis" data-am="ሲስተም ትንተና">System Analysis</h3>
+                    <img src="../images/system analysis.jpg" alt="System Analysis">
+                    <div class="skill-list">
+                        <span class="skill-tag">Workflow Modeling</span>
+                        <span class="skill-tag">Documentation</span>
+                        <span class="skill-tag">Optimization</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-en="IT Infrastructure" data-am="የመረጃ ቴክኖሎጂ መሠረተ ልማት">IT Infrastructure</h3>
+                    <img src="../images/it infrastructure.jpg" alt="IT Infrastructure">
+                    <div class="skill-list">
+                        <span class="skill-tag">Networking</span>
+                        <span class="skill-tag">System Maintenance</span>
+                        <span class="skill-tag">Basic Security</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-en="Project Management" data-am="ፕሮጀክት አስተዳደር">Project Management</h3>
+                    <img src="../images/project management.jpg" alt="Project Management">
+                    <div class="skill-list">
+                        <span class="skill-tag">Agile Methods</span>
+                        <span class="skill-tag">Team Collaboration</span>
+                        <span class="skill-tag">Reporting</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-en="Soft Skills" data-am="ልምድ ችሎታዎች">Soft Skills</h3>
+                    <img src="../images/soft skills.jpg" alt="Soft Skills">
+                    <div class="skill-list">
+                        <span class="skill-tag" data-en="Communication" data-am="መግባባት">Communication</span>
+                        <span class="skill-tag" data-en="Teamwork" data-am="ቡድን ሥራ">Teamwork</span>
+                        <span class="skill-tag" data-en="Adaptability" data-am="ማስተካከል">Adaptability</span>
+                        <span class="skill-tag" data-en="Problem-solving" data-am="ችግር መፍታት">Problem-solving</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/language-switcher.js"></script>
+    
+    <script>
+        // Load footer using fetch
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                    // Initialize footer functionality after loading
+                    if (window.updateFooterLanguage) {
+                        window.updateFooterLanguage();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                });
+        });
+    </script>
+</body>
+</html>

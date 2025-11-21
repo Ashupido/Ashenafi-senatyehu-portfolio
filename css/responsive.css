@@ -1,0 +1,28 @@
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--primary-foreground);
+    font-size: 1.5rem;
+    z-index: 1001;
+}
+
+/* Mobile Navigation Active State */
+.nav-links.active {
+    display: flex !important;
+}
+
+/* Close icon when menu is open */
+.hamburger.active .fa-bars::before {
+    content: "\f00d";
+}
+
+/* Ensure proper stacking context */
+header {
+    z-index: 1000;
+    position: relative;
+}

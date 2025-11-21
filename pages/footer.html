@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer - Ashenafi Sentayehu</title>
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional footer styles */
+        .footer-contact {
+            margin-top: 1.5rem;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .footer-newsletter {
+            margin-top: 1.5rem;
+        }
+
+        .footer-newsletter p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-foreground);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">Ashenafi <span>Sentayehu</span></div>
+                <p data-en="Full Stack Web Developer, Software Engineer and Graphic Designer creating innovative digital solutions." data-am="ፉል ስታክ ዌብ አበልጻጊ፣ ሶፍትዌር ምህንድስና እና ግራፊክ ዲዛይነር ሰዓሊ ዲጂታል መፍትሄዎችን መፍጠር።">
+                    Full Stack Web Developer, Software Engineer and Graphic Designer creating innovative digital solutions.
+                </p>
+                <div class="footer-contact">
+                    <p><i class="fas fa-envelope"></i> ashenafisentayehu19@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +251 923 231 275</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-en="Addis Ababa, Ethiopia" data-am="አዲስ አበባ፣ ኢትዮጵያ">Addis Ababa, Ethiopia</span></p>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3 data-en="Quick Links" data-am="ፈጣን አገናኞች">Quick Links</h3>
+                <ul>
+                    <li><a href="../index.html" data-en="Home" data-am="መነሻ">Home</a></li>
+                    <li><a href="about.html" data-en="About" data-am="ስለ እኔ">About</a></li>
+                    <li><a href="education.html" data-en="Education" data-am="ትምህርት">Education</a></li>
+                    <li><a href="projects.html" data-en="Projects" data-am="ፕሮጀክቶች">Projects</a></li>
+                    <li><a href="skills.html" data-en="Skills" data-am="ችሎታዎች">Skills</a></li>
+                    <li><a href="contact.html" data-en="Contact" data-am="አግኙኝ">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-social">
+                <h3 data-en="Connect With Me" data-am="ተከተሉኝ">Connect With Me</h3>
+                <div class="social-icons">
+                    <a href="https://github.com/Ashupido/" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ashenafi-sentayehu-924830377" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                      <a href="https://t.me/Ashupido21" target="_blank" title="Telegram">
+        <i class="fab fa-telegram"></i>
+    </a>
+                   
+                </div>
+                
+                <div class="footer-newsletter">
+                    <p data-en="Stay updated with my latest projects" data-am="ከእኔ ጋር በማይቀሩ አዳዲስ ፕሮጀክቶች ይታወቁ">Stay updated with my latest projects</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email" required data-en-placeholder="Your email" data-am-placeholder="ኢሜይልዎ">
+                        <button type="submit" class="newsletter-btn" data-en="Subscribe" data-am="ይመዝገቡ">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Ashenafi Sentayehu. <span data-en="All Rights Reserved" data-am="ሁሉም መብቶች የተጠበቁ ናቸው">All Rights Reserved</span>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Footer-specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize footer language based on saved preference
+            updateFooterLanguage();
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('.newsletter-input').value;
+                    const currentLang = localStorage.getItem('preferredLanguage') || 'en';
+                    
+                    // Simple validation
+                    if (email && email.includes('@')) {
+                        alert(currentLang === 'en' 
+                            ? 'Thank you for subscribing!' 
+                            : 'ለምዝገባዎ አመሰግናለሁ!');
+                        this.reset();
+                    } else {
+                        alert(currentLang === 'en' 
+                            ? 'Please enter a valid email address.' 
+                            : 'እባክዎ ትክክለኛ ኢሜይል ያስገቡ።');
+                    }
+                });
+            }
+
+            // Update newsletter placeholder based on language
+            updateNewsletterPlaceholder();
+        });
+
+        // Function to update footer language
+        function updateFooterLanguage() {
+            const lang = localStorage.getItem('preferredLanguage') || 'en';
+            const footerElements = document.querySelectorAll('footer [data-en]');
+            
+            footerElements.forEach(element => {
+                if (element.dataset[lang]) {
+                    element.textContent = element.dataset[lang];
+                }
+            });
+            
+            updateNewsletterPlaceholder();
+        }
+
+        // Update newsletter placeholder
+        function updateNewsletterPlaceholder() {
+            const lang = localStorage.getItem('preferredLanguage') || 'en';
+            const newsletterInput = document.querySelector('.newsletter-input');
+            
+            if (newsletterInput && newsletterInput.dataset[`${lang}Placeholder`]) {
+                newsletterInput.placeholder = newsletterInput.dataset[`${lang}Placeholder`];
+            }
+        }
+
+        // Listen for language changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'preferredLanguage') {
+                updateFooterLanguage();
+            }
+        });
+
+        // Expose function for external access
+        window.updateFooterLanguage = updateFooterLanguage;
+    </script>
+</body>
+</html>
