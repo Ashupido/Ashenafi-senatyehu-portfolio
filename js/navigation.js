@@ -1,16 +1,18 @@
-// Professional Navigation functionality
+// Professional Navigation functionality with Language Switcher
 class Navigation {
     constructor() {
-        this.hamburger = document.getElementById('hamburger');
-        this.navLinks = document.getElementById('navLinks');
-        this.header = document.getElementById('header');
+        this.hamburger = document.querySelector('.hamburger');
+        this.navLinks = document.querySelector('.nav-links');
+        this.header = document.querySelector('header');
         this.isMenuOpen = false;
+        this.currentLanguage = 'en'; // Default language
         
         this.init();
     }
 
     init() {
         this.initMobileMenu();
+        this.initLanguageSwitcher();
         this.initHeaderEffects();
         this.initSmoothScrolling();
         this.initActiveNavigation();
@@ -18,7 +20,10 @@ class Navigation {
     }
 
     initMobileMenu() {
-        if (!this.hamburger || !this.navLinks) return;
+        if (!this.hamburger || !this.navLinks) {
+            console.error('Navigation elements not found');
+            return;
+        }
 
         // Hamburger click
         this.hamburger.addEventListener('click', (e) => {
@@ -27,15 +32,19 @@ class Navigation {
         });
 
         // Close menu on link click
-        document.querySelectorAll('.nav-links a').forEach(link => {
+        document.querySelectorAll('.nav-links a:not(.lang-btn)').forEach(link => {
             link.addEventListener('click', () => {
-                this.closeMenu();
+                if (window.innerWidth <= 992) {
+                    this.closeMenu();
+                }
             });
         });
 
         // Close on outside click
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav') && this.isMenuOpen) {
+            if (this.isMenuOpen && 
+                !e.target.closest('.nav-links') && 
+                !e.target.closest('.hamburger')) {
                 this.closeMenu();
             }
         });
@@ -58,6 +67,107 @@ class Navigation {
         this.preventBodyScroll();
     }
 
+    initLanguageSwitcher() {
+        // Initialize language from localStorage or default to 'en'
+        const savedLang = localStorage.getItem('preferred-language');
+        if (savedLang) {
+            this.currentLanguage = savedLang;
+        }
+        
+        // Set initial language
+        this.setLanguage(this.currentLanguage);
+
+        // Add click events to all language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleLanguageDropdown(btn);
+            });
+        });
+
+        // Add click events to all language options
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                const lang = option.getAttribute('data-lang');
+                this.setLanguage(lang);
+                this.closeAllLanguageDropdowns();
+                
+                // Close mobile menu if open
+                if (this.isMenuOpen && window.innerWidth <= 992) {
+                    this.closeMenu();
+                }
+            });
+        });
+
+        // Close language dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            this.closeAllLanguageDropdowns();
+        });
+    }
+
+    toggleLanguageDropdown(button) {
+        const dropdown = button.nextElementSibling;
+        const isActive = dropdown.classList.contains('active');
+        
+        // Close all dropdowns first
+        this.closeAllLanguageDropdowns();
+        
+        // Toggle current dropdown if it wasn't active
+        if (!isActive) {
+            dropdown.classList.add('active');
+        }
+    }
+
+    closeAllLanguageDropdowns() {
+        document.querySelectorAll('.lang-dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+    }
+
+    setLanguage(lang) {
+        this.currentLanguage = lang;
+        
+        // Save to localStorage
+        localStorage.setItem('preferred-language', lang);
+        
+        // Update all language button texts
+        document.querySelectorAll('.lang-btn span').forEach(span => {
+            span.textContent = lang.toUpperCase();
+        });
+        
+        // Update all elements with data attributes
+        this.updatePageContent(lang);
+        
+        // Dispatch language change event
+        this.dispatchEvent('languageChange', { language: lang });
+    }
+
+    updatePageContent(lang) {
+        // Update all elements with data-en and data-am attributes
+        document.querySelectorAll('[data-en]').forEach(element => {
+            if (lang === 'en') {
+                element.textContent = element.getAttribute('data-en');
+            } else if (lang === 'am') {
+                element.textContent = element.getAttribute('data-am');
+            }
+        });
+
+        // Update page title based on language
+        this.updatePageTitle(lang);
+    }
+
+    updatePageTitle(lang) {
+        const titleMap = {
+            'en': 'About Me - Ashenafi Sentayehu | Full Stack Developer',
+            'am': 'ስለ እኔ - አሸናፊ ሰንታየሁ | ፉል ስታክ አበልጻጊ'
+        };
+        
+        if (titleMap[lang]) {
+            document.title = titleMap[lang];
+        }
+    }
+
     toggleMenu() {
         if (this.isMenuOpen) {
             this.closeMenu();
@@ -70,9 +180,8 @@ class Navigation {
         this.navLinks.classList.add('active');
         this.hamburger.classList.add('active');
         this.isMenuOpen = true;
-        
-        // Add menu open class to body
         document.body.classList.add('menu-open');
+        document.documentElement.classList.add('menu-open');
         
         // Animate menu items with stagger
         this.animateMenuItems('in');
@@ -85,9 +194,11 @@ class Navigation {
         this.navLinks.classList.remove('active');
         this.hamburger.classList.remove('active');
         this.isMenuOpen = false;
-        
-        // Remove menu open class from body
         document.body.classList.remove('menu-open');
+        document.documentElement.classList.remove('menu-open');
+        
+        // Close language dropdowns when menu closes
+        this.closeAllLanguageDropdowns();
         
         // Animate menu items out
         this.animateMenuItems('out');
@@ -98,31 +209,32 @@ class Navigation {
 
     animateMenuItems(direction) {
         const menuItems = this.navLinks.querySelectorAll('li:not(.language-switcher)');
-        const languageSwitcher = this.navLinks.querySelector('.language-switcher');
         
         if (direction === 'in') {
             // Animate in with stagger
             menuItems.forEach((item, index) => {
-                item.style.animation = `slideInDown 0.3s ease ${index * 0.1}s both`;
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(30px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 100);
             });
-            
-            if (languageSwitcher) {
-                languageSwitcher.style.animation = `fadeIn 0.3s ease ${menuItems.length * 0.1}s both`;
-            }
         } else {
             // Animate out
-            menuItems.forEach(item => {
-                item.style.animation = 'fadeOut 0.2s ease both';
+            menuItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.transition = 'all 0.3s ease';
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(30px)';
+                }, index * 50);
             });
-            
-            if (languageSwitcher) {
-                languageSwitcher.style.animation = 'fadeOut 0.2s ease both';
-            }
         }
     }
 
     preventBodyScroll() {
-        // Store original body position and overflow
         let scrollPosition = 0;
 
         const enableBodyScroll = () => {
@@ -130,6 +242,7 @@ class Navigation {
             document.body.style.position = '';
             document.body.style.top = '';
             document.body.style.width = '';
+            document.body.style.height = '';
             window.scrollTo(0, scrollPosition);
         };
 
@@ -139,6 +252,7 @@ class Navigation {
             document.body.style.position = 'fixed';
             document.body.style.top = `-${scrollPosition}px`;
             document.body.style.width = '100%';
+            document.body.style.height = '100%';
         };
 
         // Observe menu state changes
@@ -148,7 +262,7 @@ class Navigation {
                     if (this.navLinks.classList.contains('active')) {
                         disableBodyScroll();
                     } else {
-                        enableBodyScroll();
+                        setTimeout(enableBodyScroll, 50);
                     }
                 }
             });
@@ -165,6 +279,7 @@ class Navigation {
 
         const updateHeader = () => {
             const scrollY = window.scrollY;
+            const headerHeight = this.header.offsetHeight;
             
             // Add scrolled class based on scroll position
             if (scrollY > 50) {
@@ -173,11 +288,13 @@ class Navigation {
                 this.header.classList.remove('scrolled');
             }
 
-            // Hide/show header on scroll (optional)
-            if (scrollY > lastScrollY && scrollY > 100) {
+            // Hide/show header on scroll
+            if (scrollY > lastScrollY && scrollY > headerHeight && !this.isMenuOpen) {
                 this.header.style.transform = 'translateY(-100%)';
+                this.header.style.transition = 'transform 0.3s ease';
             } else {
                 this.header.style.transform = 'translateY(0)';
+                this.header.style.transition = 'transform 0.3s ease';
             }
             
             lastScrollY = scrollY;
@@ -202,25 +319,30 @@ class Navigation {
             anchor.addEventListener('click', (e) => {
                 const targetId = anchor.getAttribute('href');
                 
-                if (targetId.startsWith('#') && targetId !== '#') {
+                if (targetId === '#' || targetId === '#!') return;
+                
+                if (targetId.startsWith('#') && targetId.length > 1) {
                     e.preventDefault();
                     
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const headerHeight = this.header ? this.header.offsetHeight : 0;
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                        
-                        // Smooth scroll with easing
-                        this.smoothScrollTo(targetPosition, 800);
-                        
-                        // Close mobile menu if open
-                        if (this.isMenuOpen) {
-                            this.closeMenu();
-                        }
+                    this.scrollToSection(targetId);
+                    
+                    // Close mobile menu if open
+                    if (this.isMenuOpen) {
+                        this.closeMenu();
                     }
                 }
             });
         });
+    }
+
+    scrollToSection(targetId) {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            const headerHeight = this.header ? this.header.offsetHeight : 0;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            this.smoothScrollTo(targetPosition, 600);
+        }
     }
 
     smoothScrollTo(targetPosition, duration) {
@@ -231,9 +353,10 @@ class Navigation {
         const animation = (currentTime) => {
             if (startTime === null) startTime = currentTime;
             const timeElapsed = currentTime - startTime;
-            const run = this.easeInOutCubic(timeElapsed, startPosition, distance, duration);
+            const progress = Math.min(timeElapsed / duration, 1);
+            const ease = this.easeOutCubic(progress);
             
-            window.scrollTo(0, run);
+            window.scrollTo(0, startPosition + (distance * ease));
             
             if (timeElapsed < duration) {
                 requestAnimationFrame(animation);
@@ -243,12 +366,8 @@ class Navigation {
         requestAnimationFrame(animation);
     }
 
-    easeInOutCubic(t, b, c, d) {
-        // Smooth easing function
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t * t + b;
-        t -= 2;
-        return c / 2 * (t * t * t + 2) + b;
+    easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
     }
 
     initActiveNavigation() {
@@ -257,11 +376,8 @@ class Navigation {
         
         if (!sections.length || !navLinks.length) return;
 
-        let observer;
-
         if ('IntersectionObserver' in window) {
-            // Use Intersection Observer for better performance
-            observer = new IntersectionObserver((entries) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
@@ -269,39 +385,11 @@ class Navigation {
                     }
                 });
             }, {
-                rootMargin: '-20% 0px -70% 0px',
+                rootMargin: window.innerWidth <= 768 ? '-15% 0px -75% 0px' : '-20% 0px -70% 0px',
                 threshold: 0.1
             });
 
             sections.forEach(section => observer.observe(section));
-        } else {
-            // Fallback to scroll-based detection
-            let ticking = false;
-            
-            const updateActiveNav = () => {
-                let currentSection = '';
-                const headerHeight = this.header ? this.header.offsetHeight : 0;
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - headerHeight - 100;
-                    
-                    if (window.scrollY >= sectionTop) {
-                        currentSection = section.getAttribute('id');
-                    }
-                });
-
-                this.setActiveNavLink(currentSection);
-                ticking = false;
-            };
-
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(updateActiveNav);
-                    ticking = true;
-                }
-            });
-            
-            updateActiveNav();
         }
     }
 
@@ -320,34 +408,36 @@ class Navigation {
     initTouchGestures() {
         if (!this.navLinks) return;
 
-        let startX = 0;
-        let currentX = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-        const onTouchStart = (e) => {
-            startX = e.touches[0].clientX;
-        };
+        this.navLinks.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
 
-        const onTouchMove = (e) => {
-            if (!this.isMenuOpen) return;
-            
-            currentX = e.touches[0].clientX;
-            const diff = startX - currentX;
-
-            // Swipe right to close if menu is open
-            if (diff < -50) {
-                this.closeMenu();
-            }
-        };
-
-        this.navLinks.addEventListener('touchstart', onTouchStart, { passive: true });
-        this.navLinks.addEventListener('touchmove', onTouchMove, { passive: true });
+        this.navLinks.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe(touchStartX, touchEndX);
+        }, { passive: true });
     }
 
-    dispatchEvent(eventName) {
+    handleSwipe(startX, endX) {
+        const swipeThreshold = 50;
+        const swipeDistance = startX - endX;
+
+        // Swipe right to close (negative distance means right swipe)
+        if (swipeDistance < -swipeThreshold && this.isMenuOpen) {
+            this.closeMenu();
+        }
+    }
+
+    dispatchEvent(eventName, detail = {}) {
         const event = new CustomEvent(`navigation:${eventName}`, {
             detail: { 
                 navigation: this,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                isMobile: window.innerWidth <= 992,
+                ...detail
             }
         });
         document.dispatchEvent(event);
@@ -365,14 +455,30 @@ class Navigation {
     isOpen() {
         return this.isMenuOpen;
     }
+
+    getCurrentLanguage() {
+        return this.currentLanguage;
+    }
+
+    setLanguage(lang) {
+        this.setLanguage(lang);
+    }
 }
 
 // Initialize navigation
 document.addEventListener('DOMContentLoaded', function() {
     window.appNavigation = new Navigation();
-});
 
-// Export for module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Navigation;
-}
+    // Add mobile-specific body class
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('is-mobile');
+    }
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('is-mobile');
+        } else {
+            document.body.classList.remove('is-mobile');
+        }
+    });
+});
