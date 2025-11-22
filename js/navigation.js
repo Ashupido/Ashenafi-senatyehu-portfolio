@@ -1,11 +1,11 @@
-// Professional Navigation functionality with Language Switcher
+// Professional Navigation functionality
 class Navigation {
     constructor() {
         this.hamburger = document.querySelector('.hamburger');
         this.navLinks = document.querySelector('.nav-links');
         this.header = document.querySelector('header');
         this.isMenuOpen = false;
-        this.currentLanguage = 'en'; // Default language
+        this.currentLanguage = 'en';
         
         this.init();
     }
@@ -72,10 +72,8 @@ class Navigation {
         const savedLang = localStorage.getItem('preferred-language');
         if (savedLang) {
             this.currentLanguage = savedLang;
+            this.setLanguage(this.currentLanguage);
         }
-        
-        // Set initial language
-        this.setLanguage(this.currentLanguage);
 
         // Add click events to all language buttons
         document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -159,8 +157,8 @@ class Navigation {
 
     updatePageTitle(lang) {
         const titleMap = {
-            'en': 'About Me - Ashenafi Sentayehu | Full Stack Developer',
-            'am': 'ስለ እኔ - አሸናፊ ሰንታየሁ | ፉል ስታክ አበልጻጊ'
+            'en': 'Ashenafi Sentayehu | Full Stack Developer Portfolio',
+            'am': 'አሸናፊ ሰንታየሁ | ፉል ስታክ አበልጻጊ ፖርትፎሊዮ'
         };
         
         if (titleMap[lang]) {
@@ -458,10 +456,6 @@ class Navigation {
 
     getCurrentLanguage() {
         return this.currentLanguage;
-    }
-
-    setLanguage(lang) {
-        this.setLanguage(lang);
     }
 }
 
