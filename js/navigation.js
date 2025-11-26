@@ -6,6 +6,7 @@ class Navigation {
         this.header = document.querySelector('header');
         this.isMenuOpen = false;
         this.currentLanguage = 'en';
+        this.scrollPosition = 0;
         
         this.init();
     }
@@ -17,6 +18,7 @@ class Navigation {
         this.initSmoothScrolling();
         this.initActiveNavigation();
         this.initTouchGestures();
+        this.initAccessibility();
     }
 
     initMobileMenu() {
@@ -31,9 +33,13 @@ class Navigation {
             this.toggleMenu();
         });
 
-        // Close menu on link click
-        document.querySelectorAll('.nav-links a:not(.lang-btn)').forEach(link => {
-            link.addEventListener('click', () => {
+        // Close menu on link click (excluding language buttons)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Don't close menu for language switcher clicks
+                if (link.classList.contains('lang-btn')) {
+                    return;
+                }
                 if (window.innerWidth <= 992) {
                     this.closeMenu();
                 }
@@ -61,10 +67,28 @@ class Navigation {
             if (window.innerWidth > 992 && this.isMenuOpen) {
                 this.closeMenu();
             }
+            
+            // Update body class for mobile detection
+            this.updateBodyClass();
         });
 
         // Prevent body scroll when menu is open
         this.preventBodyScroll();
+        
+        // Initial body class update
+        this.updateBodyClass();
+    }
+
+    updateBodyClass() {
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('is-mobile');
+            document.body.classList.remove('is-tablet');
+        } else if (window.innerWidth <= 992) {
+            document.body.classList.add('is-tablet');
+            document.body.classList.remove('is-mobile');
+        } else {
+            document.body.classList.remove('is-mobile', 'is-tablet');
+        }
     }
 
     initLanguageSwitcher() {
@@ -75,52 +99,26 @@ class Navigation {
             this.setLanguage(this.currentLanguage);
         }
 
-        // Add click events to all language buttons
+        // Add click events to ALL language buttons (both desktop and mobile)
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggleLanguageDropdown(btn);
-            });
-        });
-
-        // Add click events to all language options
-        document.querySelectorAll('.lang-option').forEach(option => {
-            option.addEventListener('click', (e) => {
                 e.preventDefault();
-                const lang = option.getAttribute('data-lang');
-                this.setLanguage(lang);
-                this.closeAllLanguageDropdowns();
+                e.stopPropagation();
                 
-                // Close mobile menu if open
-                if (this.isMenuOpen && window.innerWidth <= 992) {
-                    this.closeMenu();
+                const lang = btn.getAttribute('data-lang');
+                if (lang && (lang === 'en' || lang === 'am')) {
+                    this.setLanguage(lang);
+                    
+                    // Close mobile menu if open (only for mobile view)
+                    if (this.isMenuOpen && window.innerWidth <= 992) {
+                        this.closeMenu();
+                    }
                 }
             });
         });
 
-        // Close language dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            this.closeAllLanguageDropdowns();
-        });
-    }
-
-    toggleLanguageDropdown(button) {
-        const dropdown = button.nextElementSibling;
-        const isActive = dropdown.classList.contains('active');
-        
-        // Close all dropdowns first
-        this.closeAllLanguageDropdowns();
-        
-        // Toggle current dropdown if it wasn't active
-        if (!isActive) {
-            dropdown.classList.add('active');
-        }
-    }
-
-    closeAllLanguageDropdowns() {
-        document.querySelectorAll('.lang-dropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-        });
+        // Update all language button active states
+        this.updateLanguageButtonStates(this.currentLanguage);
     }
 
     setLanguage(lang) {
@@ -129,16 +127,40 @@ class Navigation {
         // Save to localStorage
         localStorage.setItem('preferred-language', lang);
         
-        // Update all language button texts
-        document.querySelectorAll('.lang-btn span').forEach(span => {
-            span.textContent = lang.toUpperCase();
-        });
+        // Update all language button active states
+        this.updateLanguageButtonStates(lang);
         
         // Update all elements with data attributes
         this.updatePageContent(lang);
         
+        // Update navigation menu text
+        this.updateNavigationMenu(lang);
+        
+        // Update page title based on language
+        this.updatePageTitle(lang);
+        
+        // Update ARIA labels
+        this.updateAriaLabels(lang);
+        
         // Dispatch language change event
         this.dispatchEvent('languageChange', { language: lang });
+    }
+
+    updateLanguageButtonStates(lang) {
+        // Update all language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            const btnLang = btn.getAttribute('data-lang');
+            const isActive = btnLang === lang;
+            
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', isActive);
+            
+            // Update button text
+            const span = btn.querySelector('span');
+            if (span) {
+                span.textContent = lang.toUpperCase();
+            }
+        });
     }
 
     updatePageContent(lang) {
@@ -151,18 +173,119 @@ class Navigation {
             }
         });
 
-        // Update page title based on language
-        this.updatePageTitle(lang);
+        // Update form placeholders
+        this.updateFormPlaceholders(lang);
+        
+        // Update image alt texts if they have data attributes
+        this.updateImageAlts(lang);
+    }
+
+    updateFormPlaceholders(lang) {
+        document.querySelectorAll('input, textarea').forEach(input => {
+            const placeholderEn = input.getAttribute('data-placeholder-en');
+            const placeholderAm = input.getAttribute('data-placeholder-am');
+            
+            if (placeholderEn && placeholderAm) {
+                input.placeholder = lang === 'en' ? placeholderEn : placeholderAm;
+            }
+        });
+    }
+
+    updateImageAlts(lang) {
+        document.querySelectorAll('img[data-alt-en]').forEach(img => {
+            const altEn = img.getAttribute('data-alt-en');
+            const altAm = img.getAttribute('data-alt-am');
+            
+            if (altEn && altAm) {
+                img.alt = lang === 'en' ? altEn : altAm;
+            }
+        });
+    }
+
+    updateNavigationMenu(lang) {
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        const menuTranslations = {
+            en: {
+                'Home': 'Home',
+                'About': 'About',
+                'Education & Experience': 'Education & Experience',
+                'Projects': 'Projects',
+                'Skills': 'Skills',
+                'Contact': 'Contact'
+            },
+            am: {
+                'Home': 'መነሻ',
+                'About': 'ስለ እኔ',
+                'Education & Experience': 'ትምህርት እና ልምድ',
+                'Projects': 'ፕሮጀክቶች',
+                'Skills': 'ችሎታዎች',
+                'Contact': 'አግኙኝ'
+            }
+        };
+
+        navLinks.forEach(link => {
+            // Skip language buttons
+            if (link.classList.contains('lang-btn')) return;
+            
+            const originalText = link.getAttribute('data-original-text') || link.textContent.trim();
+            
+            // Store original text if not already stored
+            if (!link.getAttribute('data-original-text')) {
+                link.setAttribute('data-original-text', originalText);
+            }
+            
+            if (menuTranslations[lang] && menuTranslations[lang][originalText]) {
+                link.textContent = menuTranslations[lang][originalText];
+            }
+        });
+    }
+
+    updateAriaLabels(lang) {
+        const translations = {
+            en: {
+                menuToggle: 'Toggle navigation menu',
+                languageSwitch: 'Switch language'
+            },
+            am: {
+                menuToggle: 'የማውጫ ሜኑ አቀማመጥ ቀይር',
+                languageSwitch: 'ቋንቋ ቀይር'
+            }
+        };
+        
+        if (this.hamburger) {
+            this.hamburger.setAttribute('aria-label', translations[lang].menuToggle);
+        }
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.setAttribute('aria-label', `${translations[lang].languageSwitch} to ${btn.getAttribute('data-lang').toUpperCase()}`);
+        });
     }
 
     updatePageTitle(lang) {
-        const titleMap = {
-            'en': 'Ashenafi Sentayehu | Full Stack Developer Portfolio',
-            'am': 'አሸናፊ ሰንታየሁ | ፉል ስታክ አበልጻጊ ፖርትፎሊዮ'
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        
+        const pageTitles = {
+            en: {
+                'index.html': 'Ashenafi Sentayehu | Full Stack Developer Portfolio',
+                'about.html': 'About Me - Ashenafi Sentayehu',
+                'education.html': 'Education & Experience - Ashenafi Sentayehu',
+                'projects.html': 'Projects - Ashenafi Sentayehu',
+                'skills.html': 'Skills - Ashenafi Sentayehu',
+                'contact.html': 'Contact Me - Ashenafi Sentayehu'
+            },
+            am: {
+                'index.html': 'አሸናፊ ሰንታየሁ | ፉል ስታክ አበልጻጊ ፖርትፎሊዮ',
+                'about.html': 'ስለ እኔ - አሸናፊ ሰንታየሁ',
+                'education.html': 'ትምህርት እና ልምድ - አሸናፊ ሰንታየሁ',
+                'projects.html': 'ፕሮጀክቶች - አሸናፊ ሰንታየሁ',
+                'skills.html': 'ችሎታዎች - አሸናፊ ሰንታየሁ',
+                'contact.html': 'ያግኙኝ - አሸናፊ ሰንታየሁ'
+            }
         };
         
-        if (titleMap[lang]) {
-            document.title = titleMap[lang];
+        if (pageTitles[lang] && pageTitles[lang][currentPage]) {
+            document.title = pageTitles[lang][currentPage];
         }
     }
 
@@ -178,8 +301,17 @@ class Navigation {
         this.navLinks.classList.add('active');
         this.hamburger.classList.add('active');
         this.isMenuOpen = true;
-        document.body.classList.add('menu-open');
-        document.documentElement.classList.add('menu-open');
+        this.lockBodyScroll();
+        
+        // Update ARIA attributes
+        this.hamburger.setAttribute('aria-expanded', 'true');
+        this.navLinks.setAttribute('aria-hidden', 'false');
+        
+        // Show language switcher in mobile
+        const mobileLanguageSwitcher = document.querySelector('.language-switcher-mobile');
+        if (mobileLanguageSwitcher && window.innerWidth <= 992) {
+            mobileLanguageSwitcher.classList.add('active');
+        }
         
         // Animate menu items with stagger
         this.animateMenuItems('in');
@@ -192,11 +324,17 @@ class Navigation {
         this.navLinks.classList.remove('active');
         this.hamburger.classList.remove('active');
         this.isMenuOpen = false;
-        document.body.classList.remove('menu-open');
-        document.documentElement.classList.remove('menu-open');
+        this.unlockBodyScroll();
         
-        // Close language dropdowns when menu closes
-        this.closeAllLanguageDropdowns();
+        // Update ARIA attributes
+        this.hamburger.setAttribute('aria-expanded', 'false');
+        this.navLinks.setAttribute('aria-hidden', 'true');
+        
+        // Hide language switcher in mobile
+        const mobileLanguageSwitcher = document.querySelector('.language-switcher-mobile');
+        if (mobileLanguageSwitcher && window.innerWidth <= 992) {
+            mobileLanguageSwitcher.classList.remove('active');
+        }
         
         // Animate menu items out
         this.animateMenuItems('out');
@@ -206,98 +344,105 @@ class Navigation {
     }
 
     animateMenuItems(direction) {
-        const menuItems = this.navLinks.querySelectorAll('li:not(.language-switcher)');
+        const menuItems = this.navLinks.querySelectorAll('li');
+        const mobileLanguageSwitcher = document.querySelector('.language-switcher-mobile');
+        const navContent = this.navLinks.querySelector('.nav-links__content');
         
         if (direction === 'in') {
+            // Reset styles first
+            menuItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-10px)';
+                item.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            
             // Animate in with stagger
             menuItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(30px)';
-                
                 setTimeout(() => {
-                    item.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
                     item.style.opacity = '1';
-                    item.style.transform = 'translateX(0)';
+                    item.style.transform = 'translateY(0)';
                 }, index * 100);
             });
+            
+            // Animate language switcher from bottom
+            if (mobileLanguageSwitcher && window.innerWidth <= 992) {
+                setTimeout(() => {
+                    mobileLanguageSwitcher.style.opacity = '1';
+                    mobileLanguageSwitcher.style.transform = 'translateY(0)';
+                }, menuItems.length * 100 + 200);
+            }
+            
+            // Scroll to top when menu opens
+            if (navContent) {
+                setTimeout(() => {
+                    navContent.scrollTop = 0;
+                }, 100);
+            }
         } else {
             // Animate out
             menuItems.forEach((item, index) => {
                 setTimeout(() => {
                     item.style.transition = 'all 0.3s ease';
                     item.style.opacity = '0';
-                    item.style.transform = 'translateX(30px)';
+                    item.style.transform = 'translateY(-10px)';
                 }, index * 50);
             });
+            
+            if (mobileLanguageSwitcher && window.innerWidth <= 992) {
+                mobileLanguageSwitcher.style.opacity = '0';
+                mobileLanguageSwitcher.style.transform = 'translateY(20px)';
+            }
         }
     }
 
-    preventBodyScroll() {
-        let scrollPosition = 0;
-
-        const enableBodyScroll = () => {
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            document.body.style.height = '';
-            window.scrollTo(0, scrollPosition);
-        };
-
-        const disableBodyScroll = () => {
-            scrollPosition = window.pageYOffset;
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollPosition}px`;
-            document.body.style.width = '100%';
-            document.body.style.height = '100%';
-        };
-
-        // Observe menu state changes
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'class') {
-                    if (this.navLinks.classList.contains('active')) {
-                        disableBodyScroll();
-                    } else {
-                        setTimeout(enableBodyScroll, 50);
-                    }
-                }
-            });
-        });
-
-        observer.observe(this.navLinks, { attributes: true });
+    lockBodyScroll() {
+        this.scrollPosition = window.pageYOffset;
+        document.body.classList.add('menu-open');
+        document.documentElement.classList.add('menu-open');
+        document.body.style.top = `-${this.scrollPosition}px`;
     }
 
-    initHeaderEffects() {
-        if (!this.header) return;
+    unlockBodyScroll() {
+        document.body.classList.remove('menu-open');
+        document.documentElement.classList.remove('menu-open');
+        document.body.style.top = '';
+        window.scrollTo(0, this.scrollPosition);
+    }
 
-        let lastScrollY = window.scrollY;
-        let ticking = false;
-
-        const updateHeader = () => {
-            const scrollY = window.scrollY;
-            const headerHeight = this.header.offsetHeight;
-            
-            // Add scrolled class based on scroll position
-            if (scrollY > 50) {
-                this.header.classList.add('scrolled');
-            } else {
-                this.header.classList.remove('scrolled');
+    preventBodyScroll() {
+        // Additional safety for scroll prevention
+        document.addEventListener('touchmove', (e) => {
+            if (this.isMenuOpen && !e.target.closest('.nav-links')) {
+                e.preventDefault();
             }
+        }, { passive: false });
+    }
 
-            // Hide/show header on scroll
-            if (scrollY > lastScrollY && scrollY > headerHeight && !this.isMenuOpen) {
-                this.header.style.transform = 'translateY(-100%)';
-                this.header.style.transition = 'transform 0.3s ease';
-            } else {
-                this.header.style.transform = 'translateY(0)';
-                this.header.style.transition = 'transform 0.3s ease';
-            }
-            
-            lastScrollY = scrollY;
-            ticking = false;
-        };
+   initHeaderEffects() {
+    if (!this.header) return;
+
+    let ticking = false;
+
+    const updateHeader = () => {
+        const scrollY = window.scrollY;
+        
+        // ALWAYS SHOW HEADER - Only change background on scroll
+        if (scrollY > 50) {
+            this.header.classList.add('scrolled');
+        } else {
+            this.header.classList.remove('scrolled');
+        }
+
+        // Header will always be visible - no transform changes
+        this.header.style.transform = 'translateY(0)';
+        this.header.style.transition = 'all 0.3s ease';
+        
+        this.lastScrollY = scrollY;
+        ticking = false;
+    };
+
+    // ... rest of the method
+
 
         const onScroll = () => {
             if (!ticking) {
@@ -339,7 +484,7 @@ class Navigation {
             const headerHeight = this.header ? this.header.offsetHeight : 0;
             const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
             
-            this.smoothScrollTo(targetPosition, 600);
+            this.smoothScrollTo(targetPosition, 800);
         }
     }
 
@@ -383,11 +528,21 @@ class Navigation {
                     }
                 });
             }, {
-                rootMargin: window.innerWidth <= 768 ? '-15% 0px -75% 0px' : '-20% 0px -70% 0px',
+                rootMargin: this.getRootMargin(),
                 threshold: 0.1
             });
 
             sections.forEach(section => observer.observe(section));
+        }
+    }
+
+    getRootMargin() {
+        if (window.innerWidth <= 480) {
+            return '-15% 0px -75% 0px';
+        } else if (window.innerWidth <= 768) {
+            return '-20% 0px -70% 0px';
+        } else {
+            return '-25% 0px -65% 0px';
         }
     }
 
@@ -429,6 +584,37 @@ class Navigation {
         }
     }
 
+    initAccessibility() {
+        // Add ARIA attributes
+        if (this.hamburger) {
+            this.hamburger.setAttribute('aria-expanded', 'false');
+            this.hamburger.setAttribute('aria-controls', 'nav-links');
+            this.hamburger.setAttribute('aria-label', 'Toggle navigation menu');
+        }
+        
+        if (this.navLinks) {
+            this.navLinks.setAttribute('aria-hidden', 'false');
+            this.navLinks.id = 'nav-links';
+        }
+        
+        // Add keyboard navigation
+        this.navLinks.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && this.isMenuOpen) {
+                const focusableElements = this.navLinks.querySelectorAll('a, button, .lang-btn');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        });
+    }
+
     dispatchEvent(eventName, detail = {}) {
         const event = new CustomEvent(`navigation:${eventName}`, {
             detail: { 
@@ -457,22 +643,13 @@ class Navigation {
     getCurrentLanguage() {
         return this.currentLanguage;
     }
+
+    changeLanguage(lang) {
+        this.setLanguage(lang);
+    }
 }
 
 // Initialize navigation
 document.addEventListener('DOMContentLoaded', function() {
     window.appNavigation = new Navigation();
-
-    // Add mobile-specific body class
-    if (window.innerWidth <= 768) {
-        document.body.classList.add('is-mobile');
-    }
-
-    window.addEventListener('resize', () => {
-        if (window.innerWidth <= 768) {
-            document.body.classList.add('is-mobile');
-        } else {
-            document.body.classList.remove('is-mobile');
-        }
-    });
 });
