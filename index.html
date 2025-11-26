@@ -9,7 +9,7 @@
     <meta name="keywords" content="Full Stack Developer, Web Developer, Software Engineer, Graphic Designer, React, Node.js, Portfolio">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/responsive.css">
+   
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/hero.css">
@@ -25,18 +25,20 @@
     <header id="header">
         <nav>
             <a href="index.html" class="logo">A<span>S</span></a>
+            
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" data-original-text="Home">Home</a></li>
-                <li><a href="pages/about.html" data-original-text="About">About</a></li>
-                <li><a href="pages/education.html" data-original-text="Education & Experience">Education & Experience</a></li>
-                <li><a href="pages/projects.html" data-original-text="Projects">Projects</a></li>
-                <li><a href="pages/skills.html" data-original-text="Skills">Skills</a></li>
-                <li><a href="pages/contact.html" data-original-text="Contact">Contact</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="pages/about.html">About</a></li>
+                <li><a href="pages/education.html">Education & Experience</a></li>
+                <li><a href="pages/projects.html">Projects</a></li>
+                <li><a href="pages/skills.html">Skills</a></li>
+                <li><a href="pages/contact.html">Contact</a></li>
                 <li class="language-switcher">
                     <button class="language-btn active" data-lang="en">English</button>
                     <button class="language-btn" data-lang="am">Amharic</button>
                 </li>
             </ul>
+            
             <div class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
             </div>
@@ -107,7 +109,8 @@
             </div>
         </div>
     </section>
-        <!-- Education & Experience Section -->
+
+    <!-- Education & Experience Section -->
     <section id="education">
         <div class="container">
             <div class="section-title">
@@ -325,6 +328,7 @@
                 <h2 data-en="Contact Me" data-am="ያግኙኝ">Contact Me</h2>
                 <p data-en="Get in touch with me for any inquiries or collaborations" data-am="ለማንኛውም ጥያቄ ወይም ትብብር አግኙኝ">Get in touch with me for any inquiries or collaborations</p>
             </div>
+            
             <div class="contact-content">
                 <!-- Contact Info -->
                 <div class="contact-info">
@@ -360,16 +364,15 @@
 
                 <!-- Contact Form -->
                 <div class="contact-form">
-                    <form class="contact-form"
-                        action="https://formsubmit.co/c6863acbcc0277c72bd8c1cdb88174d2"
-                        method="POST">
-
-                        <!-- redirect to your success page -->
-                        <input type="hidden" name="_next"
-                            value="https://ashenafi-sentayehu-portfolio.netlify.app/">
-
-                        <!-- disable captcha -->
+                    <form action="https://formsubmit.co/ashenafisentayehu19@gmail.com" method="POST">
+                        <!-- Redirect after successful submit -->
+                        <input type="hidden" name="_next" value="https://ashenafi-sentayehu-portfolio.netlify.app/">
+                        
+                        <!-- Disable captcha -->
                         <input type="hidden" name="_captcha" value="false">
+                        
+                        <!-- Optional: Make the email look clean (table style) -->
+                        <input type="hidden" name="_template" value="table">
 
                         <div class="form-group">
                             <label for="name" data-en="Your Name" data-am="ስምዎ">Your Name</label>
@@ -389,7 +392,7 @@
                         <button type="submit" class="btn btn-primary" data-en="Send Message" data-am="መልእክት ይላኩ">Send Message</button>
                     </form>
 
-                    <!-- Success Message (Hidden by default) -->
+                    <!-- Success Message -->
                     <div class="msg" id="successMessage"></div>
                 </div>
             </div>
@@ -399,117 +402,79 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <script src="js/main.js"></script>
     <script src="js/navigation.js"></script>
-    <script src="js/animations.js"></script>
     <script src="js/language-switcher.js"></script>
+    <script src="js/animations.js"></script>
     <script src="js/slider.js"></script>
+    <script src="js/main.js"></script>
     
     <script>
-        // Load footer using fetch
+        // Load footer using fetch and initialize all functionality
         document.addEventListener('DOMContentLoaded', function() {
             fetch('pages/footer.html')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Footer not found');
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     document.getElementById('footer-container').innerHTML = data;
-                    // Initialize footer functionality after loading
-                    if (window.updateFooterLanguage) {
-                        window.updateFooterLanguage();
-                    }
                 })
                 .catch(error => {
                     console.error('Error loading footer:', error);
+                    // Create a simple footer if fetch fails
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer>
+                            <div class="container">
+                                <p>&copy; 2024 Ashenafi Sentayehu. All rights reserved.</p>
+                            </div>
+                        </footer>
+                    `;
                 });
 
             // Create floating elements for hero section
             const floatingElements = document.getElementById('floatingElements');
-            for (let i = 0; i < 15; i++) {
-                const element = document.createElement('div');
-                element.classList.add('floating-element');
-                
-                const size = Math.random() * 60 + 20;
-                element.style.width = `${size}px`;
-                element.style.height = `${size}px`;
-                element.style.left = `${Math.random() * 100}%`;
-                element.style.top = `${Math.random() * 100}%`;
-                element.style.animationDuration = `${Math.random() * 20 + 10}s`;
-                element.style.animationDelay = `${Math.random() * 5}s`;
-                
-                floatingElements.appendChild(element);
+            if (floatingElements) {
+                for (let i = 0; i < 15; i++) {
+                    const element = document.createElement('div');
+                    element.classList.add('floating-element');
+                    
+                    const size = Math.random() * 60 + 20;
+                    element.style.width = `${size}px`;
+                    element.style.height = `${size}px`;
+                    element.style.left = `${Math.random() * 100}%`;
+                    element.style.top = `${Math.random() * 100}%`;
+                    element.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                    element.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    floatingElements.appendChild(element);
+                }
             }
 
-            // Form submission message
-            const form = document.querySelector(".contact-form");
+            // Form submission message - SAME AS CONTACT PAGE
+            const form = document.querySelector(".contact-form form");
             const msg = document.getElementById("successMessage");
 
-            form.addEventListener("submit", () => {
-                const currentLang = localStorage.getItem('preferredLanguage') || 'en';
-                // Show success message immediately
-                const successText = currentLang === 'en' 
-                    ? 'Message sent successfully!' 
-                    : 'መልእክት ተልኳል!';
-                msg.textContent = successText;
-                msg.style.display = "block";
-                
-                // Hide message after 3 seconds
-                setTimeout(() => {
-                    msg.style.display = "none";
-                }, 3000);
-            });
-        });
-    </script>
-        <script>
-        // Load footer using fetch
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('pages/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('footer-container').innerHTML = data;
-                    // Initialize footer functionality after loading
-                    if (window.updateFooterLanguage) {
-                        window.updateFooterLanguage();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
+            if (form && msg) {
+                form.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    const currentLang = localStorage.getItem('preferred-language') || 'en';
+                    // Show success message immediately
+                    const successText = currentLang === 'en' 
+                        ? 'Message sent successfully!' 
+                        : 'መልእክት ተልኳል!';
+                    msg.textContent = successText;
+                    msg.style.display = "block";
+                    
+                    // Hide message after 3 seconds and submit form
+                    setTimeout(() => {
+                        msg.style.display = "none";
+                        form.submit();
+                    }, 3000);
                 });
-
-            // Create floating elements for hero section
-            const floatingElements = document.getElementById('floatingElements');
-            for (let i = 0; i < 15; i++) {
-                const element = document.createElement('div');
-                element.classList.add('floating-element');
-                
-                const size = Math.random() * 60 + 20;
-                element.style.width = `${size}px`;
-                element.style.height = `${size}px`;
-                element.style.left = `${Math.random() * 100}%`;
-                element.style.top = `${Math.random() * 100}%`;
-                element.style.animationDuration = `${Math.random() * 20 + 10}s`;
-                element.style.animationDelay = `${Math.random() * 5}s`;
-                
-                floatingElements.appendChild(element);
             }
-
-            // Form submission message
-            const form = document.querySelector(".contact-form");
-            const msg = document.getElementById("successMessage");
-
-            form.addEventListener("submit", () => {
-                const currentLang = localStorage.getItem('preferredLanguage') || 'en';
-                // Show success message immediately
-                const successText = currentLang === 'en' 
-                    ? 'Message sent successfully!' 
-                    : 'መልእክት ተልኳል!';
-                msg.textContent = successText;
-                msg.style.display = "block";
-                
-                // Hide message after 3 seconds
-                setTimeout(() => {
-                    msg.style.display = "none";
-                }, 3000);
-            });
-
+           
             // Timeline animation for education section
             const timelineItems = document.querySelectorAll('.timeline-item');
             
@@ -538,6 +503,25 @@
             
             window.addEventListener('scroll', checkScroll);
             checkScroll(); // Check initial state
+
+            // Scroll animations for all sections
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
         });
     </script>
 </body>
